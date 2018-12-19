@@ -1,14 +1,9 @@
-import {
-  Component,
-  Vue,
-} from 'vue-property-decorator';
-import { componentName } from '@/util';
-import { Api } from '@/api';
+import VueTsxComponent from '@/vue-tsx';
+import { Doc } from '@/api';
 
-@Component({ name: componentName('FormSet') })
-@Api.Component('Form Set')
-@Api.defaultSlot('Content of the form set (usually form items).')
-export class FormSet extends Vue {
+@Doc.component('FormSet')
+@Doc.defaultSlot('Content of the form set (usually form items).')
+export class FormSet extends VueTsxComponent<{}> {
   public render() {
     const items = this.$slots.default;
     return <div class='fd-form__set'>{items}</div>;

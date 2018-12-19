@@ -1,10 +1,6 @@
-import { componentName } from '@/util';
-import {
-  Component,
-  Prop,
-} from 'vue-property-decorator';
 import { CreateElement } from 'vue';
 import TsxComponent from '@/vue-tsx';
+import { Doc } from '@/api';
 
 // Map modifier to CSS class name
 const calendarItemModifierMapping = {
@@ -46,7 +42,7 @@ interface Props {
   tag?: string;
 }
 
-@Component({ name: componentName('CalendarItem') })
+@Doc.component('CalendarItem')
 export class CalendarItem extends TsxComponent<Props> {
   // This is the HTML-tag used when rendering the item.
   // We need this flexibility because sometimes a calendar item is rendered
@@ -57,16 +53,16 @@ export class CalendarItem extends TsxComponent<Props> {
   //
   // Specifically have a look at the standard calendar with selectable days
   // and compare it to the 'calendar' which allows the selection of months only.
-  @Prop({ default: 'td', type: String })
+  @Doc.prop({ default: 'td', type: String })
   public tag!: string;
 
-  @Prop({ default: '', type: String })
+  @Doc.prop({ default: '', type: String })
   public text!: string;
 
-  @Prop({ default: null, type: String, validator: CalendarItemModifierValidator })
+  @Doc.prop({ default: null, type: String, validator: CalendarItemModifierValidator })
   public modifier!: CalendarItemModifier | null;
 
-  @Prop({ default: null, type: String, validator: CalendarItemStatesValidator })
+  @Doc.prop({ default: null, type: String, validator: CalendarItemStatesValidator })
   public state!: CalendarItemState | null;
 
   public render(h: CreateElement) {

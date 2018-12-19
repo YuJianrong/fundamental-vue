@@ -1,10 +1,5 @@
-import {
-  Component,
-  Prop,
-} from 'vue-property-decorator';
-import { componentName } from '@/util';
-import { Api } from '@/api';
 import TsxComponent from '@/vue-tsx';
+import { Doc } from '@/api';
 
 interface Props {
   before?: string | null;
@@ -13,25 +8,21 @@ interface Props {
   compact?: boolean;
 }
 
-@Component({ name: componentName('InputGroup') })
-@Api.Component('InputGroup')
-@Api.slot('before', 'Content to be placed before the input component.')
-@Api.slot('after', 'Content to be placed after the input component.')
-@Api.defaultSlot('The input component placed in the input group.')
+@Doc.component('InputGroup')
+@Doc.slot('before', 'Content to be placed before the input component.')
+@Doc.slot('after', 'Content to be placed after the input component.')
+@Doc.defaultSlot('The input component placed in the input group.')
 export class InputGroup extends TsxComponent<Props> {
-  @Api.Prop('text/number before the input', prop => prop.type(String, Number))
-  @Prop({ type: String, required: false, default: null })
+  @Doc.prop('text/number before the input', { type: String, default: null })
   public before!: string | null;
 
-  @Api.Prop('text/number after the input', prop => prop.type(String, Number))
-  @Prop({ type: String, required: false, default: null })
+  @Doc.prop('text/number after the input', { type: String, default: null })
   public after!: string | null;
 
-  @Prop({ type: String, required: false, default: null })
+  @Doc.prop({ type: String, default: null })
   public afterClass!: string | null;
 
-  @Api.Prop('whether input group is compact', prop => prop.type(Boolean))
-  @Prop({ type: Boolean, default: false })
+  @Doc.prop('whether input group is compact', { type: Boolean, default: false })
   public compact!: boolean;
 
   public render() {

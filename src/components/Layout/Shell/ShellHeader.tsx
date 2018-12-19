@@ -1,20 +1,14 @@
-import {
-  Component,
-  Prop,
-} from 'vue-property-decorator';
-import { componentName } from '@/util';
-import { Api } from '@/api';
 import TsxComponent from '@/vue-tsx';
+import { Doc } from '@/api';
 
 interface Props {
   fixed?: boolean;
 }
 
-@Component({ name: componentName('ShellHeader') })
-@Api.Component('Shell Header')
-@Api.defaultSlot('Header Content')
+@Doc.component('ShellHeader')
+@Doc.defaultSlot('Header Content')
 export class ShellHeader extends TsxComponent<Props> {
-  @Prop({type: Boolean, default: false })
+  @Doc.prop({type: Boolean, default: false })
   public fixed!: boolean | null;
 
   private get classes() {

@@ -1,21 +1,23 @@
-import { componentName } from '@/util';
-import { Component, Prop, Model, Watch } from 'vue-property-decorator';
+import { Watch } from 'vue-property-decorator';
 import TsxComponent from '@/vue-tsx';
 import { earlierDate, laterDate } from './../util';
-import { Api } from '@/api';
+import { Doc } from '@/api';
 
 const selectionModeMapping = { single: 'single', range: 'range' };
 type SelectionMode = keyof typeof selectionModeMapping;
 const SelectionModes = Object.keys(selectionModeMapping) as SelectionMode[];
 
-@Component({ name: componentName('DateSelection') })
-@Api.Component('Date Selection Mixin')
-export class DateSelection extends TsxComponent<{}> {
-  @Api.prop('Set the Selection Mode')
-  @Prop({ type: String, validator: mode => SelectionModes.includes(mode), default: 'single' })
+export interface Props {
+  selectionMode?: SelectionMode;
+  selection?: Date[];
+}
+
+@Doc.component('DateSelectionMixin')
+export class DateSelectionMixin extends TsxComponent<Props> {
+  @Doc.prop('Set the Selection Mode', { type: String, validator: mode => SelectionModes.includes(mode), default: 'single' })
   public selectionMode!: SelectionMode;
 
-  @Model('change', { type: Array, default: () => [] })
+  @Doc.model('selection', { event: 'change', type: Array, default: () => [] })
   public selection!: Date[];
   private currentDateSelection = this.selection;
 

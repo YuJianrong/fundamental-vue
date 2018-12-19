@@ -1,15 +1,11 @@
 import {
-  Component,
-  Prop,
   Vue,
   Watch,
 } from 'vue-property-decorator';
-
 import { CreateElement } from 'vue';
 import { TableColumn } from './TableColumn';
-import { componentName } from '@/util';
 import { SortOrder, TableData, compareValues, TableColumnConfig, RenderCellRequest } from './TableUtils';
-import { Api } from '@/api';
+import { Doc } from '@/api';
 import { ColumnContainer, ColumnContainerIdentifier } from './ColumnContainer';
 import TsxComponent from '@/vue-tsx';
 
@@ -38,28 +34,23 @@ type SortDescriptor<D extends TableData> = {
 };
 type Selection = number[];
 
-@Component({
-  name: componentName('Table'),
+@Doc.component('Table', {
   provide() {
     return {
       [ColumnContainerIdentifier]: this,
     };
   },
 })
-@Api.Component('Table')
-@Api.Event('select', 'Sent when the selection changes', ['rows', 'Array<number>'])
-@Api.defaultSlot('Table Columns')
+@Doc.event('select', 'Sent when the selection changes', ['rows', 'Array<number>'])
+@Doc.defaultSlot('Table Columns')
 export class Table<D extends TableData> extends TsxComponent<Props<D>> implements ColumnContainer<D> {
-  @Api.Prop('whether the column is fixed (experimental)', prop => prop.type(Boolean))
-  @Prop({ type: Boolean, required: false, default: false })
+  @Doc.prop('whether the column is fixed (experimental)', { type: Boolean, default: false })
   public firstColumnFixed!: boolean;
 
-  @Api.Prop('displayed data', prop => prop.type('Array<Object>'))
-  @Prop({ type: Array, required: false, default: () => [] })
+  @Doc.prop('displayed data', { type: Array, default: () => [] })
   public data!: D[];
 
-  @Api.Prop('selection mode', prop => prop.type(String).acceptValues(...SelectionModes))
-  @Prop({ type: String, required: false, default: null })
+  @Doc.prop('selection mode', { acceptableValues: SelectionModes, type: String, default: null })
   public selectionMode!: SelectionMode | null;
 
   public sortDescriptor: SortDescriptor<D> | null = null;

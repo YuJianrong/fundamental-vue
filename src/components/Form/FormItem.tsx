@@ -1,12 +1,7 @@
 import { ItemIdentification } from './Types/ItemIdentification';
-import {
-  Component,
-  Prop,
-} from 'vue-property-decorator';
-import { componentName } from '@/util';
-import { Uid } from '@/mixins';
+import { UidMixin } from '@/mixins';
 import { mixins } from 'vue-class-component';
-import { Api } from '@/api';
+import { Doc } from '@/api';
 
 interface Props {
   label?: string;
@@ -15,24 +10,22 @@ interface Props {
   uid?: string; // Uid mixin
 }
 
-@Component({
-  name: componentName('FormItem'),
+@Doc.component('FormItem', {
   provide() {
     return {
       itemIdentificationProvider: this,
     };
   },
 })
-@Api.Component('Form Item')
-@Api.defaultSlot('Content of the form item. Usually inputs and labels.')
-export class FormItem extends mixins(Uid) implements ItemIdentification {
-  @Prop({ type: String, required: false, default: null })
+@Doc.defaultSlot('Content of the form item. Usually inputs and labels.')
+export class FormItem extends mixins(UidMixin) implements ItemIdentification {
+  @Doc.prop({ type: String, default: null })
   public label!: string;
 
-  @Prop({ type: Boolean, required: false, default: false })
+  @Doc.prop({ type: Boolean, default: false })
   public check!: boolean;
 
-  @Prop({ type: Boolean, required: false, default: false })
+  @Doc.prop({ type: Boolean, default: false })
   public inline!: boolean;
 
   public $tsxProps!: Readonly<{}> & Readonly<Props>;

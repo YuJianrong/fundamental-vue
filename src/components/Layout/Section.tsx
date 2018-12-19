@@ -1,18 +1,15 @@
-import { Component, Prop } from 'vue-property-decorator';
-import { componentName } from '@/util';
 import TsxComponent from '@/vue-tsx';
-import { Api } from '@/api';
+import { Doc } from '@/api';
 
 interface Props {
   title?: string | null;
 }
 
-@Component({ name: componentName('Section') })
-@Api.Component('Section')
-@Api.defaultSlot('Section Body')
-@Api.slot('title', 'Custom Title')
+@Doc.component('Section')
+@Doc.defaultSlot('Section Body')
+@Doc.slot('title', 'Custom Title')
 export class Section extends TsxComponent<Props> {
-  @Prop({ type: String, default: null, required: false })
+  @Doc.prop({ type: String, default: null })
   public title!: string | null;
 
   public render() {

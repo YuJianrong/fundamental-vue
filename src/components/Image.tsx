@@ -1,10 +1,5 @@
-import {
-  Component,
-  Prop,
-} from 'vue-property-decorator';
-import { Api } from '@/api';
-import { componentName } from '@/util';
 import TsxComponent from '@/vue-tsx';
+import { Doc } from '@/api';
 
 const sizeMapping = {
   s: 'Small',
@@ -20,19 +15,15 @@ interface Props {
   circle?: boolean;
 }
 
-@Component({ name: componentName('Image') })
-@Api.Component('Image')
-export class Image extends TsxComponent<Props> {
-  @Api.Prop('image url', prop => prop.type(String))
-  @Prop({ type: String, default: null, required: false })
+@Doc.component('Image')
+export class FdImage extends TsxComponent<Props> {
+  @Doc.prop('image url', { type: String, default: null })
   public url!: string | null;
 
-  @Api.Prop('size', prop => prop.type(String).acceptValues(...IdentifierSizes))
-  @Prop({ type: String, default: 'm', required: false })
+  @Doc.prop({ acceptableValues: IdentifierSizes, type: String, default: 'm' })
   public size!: IdentifierSize;
 
-  @Api.Prop('is displayed as circle', prop => prop.type(Boolean))
-  @Prop({ required: false, default: false, type: Boolean })
+  @Doc.prop('is displayed as circle', { type: Boolean, default: false })
   public circle!: boolean;
 
   public render() {

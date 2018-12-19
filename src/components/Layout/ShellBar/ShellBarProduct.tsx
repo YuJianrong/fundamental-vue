@@ -1,11 +1,8 @@
-import { Component } from 'vue-property-decorator';
-import { componentName } from '@/util';
-import { Api } from '@/api';
+import { Doc } from '@/api';
 import TsxComponent from '@/vue-tsx';
 
-@Component({ name: componentName('ShellBarProduct') })
-@Api.Component('Shell Bar Product')
-@Api.defaultSlot('Product')
+@Doc.component('ShellBarProduct')
+@Doc.defaultSlot('Product Title')
 export class ShellBarProduct extends TsxComponent<{}> {
   public render() {
     return (

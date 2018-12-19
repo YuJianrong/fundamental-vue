@@ -1,11 +1,7 @@
-import {
-  Component,
-  Prop,
-  Watch,
-} from 'vue-property-decorator';
+import { Watch } from 'vue-property-decorator';
 import TsxComponent from '@/vue-tsx';
 import { VNode } from 'vue';
-import { componentName } from '@/util';
+import { Doc } from '@/api';
 
 type IgnoredElements = () => Element[];
 
@@ -28,15 +24,15 @@ const CLICK_OUTSIDE_EVENT = 'clickOutside';
 // This detects all clicks outside of ClickAwayContainer.
 // By default ClickAwayContainer is rendering itself as a div-element.
 // You can change that by setting the tag-prop.
-@Component({ name: componentName('ClickAwayContainer') })
+@Doc.component('ClickAwayContainer')
 export class ClickAwayContainer extends TsxComponent<Props> {
-  @Prop({ type: String, default: 'div' })
+  @Doc.prop({ type: String, default: 'div' })
   public tag!: string;
 
-  @Prop({ type: Boolean, default: false })
+  @Doc.prop({ type: Boolean, default: false })
   public active!: boolean;
 
-  @Prop({ type: Function, default: () => () => [] })
+  @Doc.prop({ type: Function, default: () => () => [] })
   public ignoredElements!: IgnoredElements;
 
   public render(createElement): VNode {

@@ -1,5 +1,5 @@
 import { ExampleCollectionFunction } from '../types';
 
-export const plugin: ExampleCollectionFunction = ({ Image }) => {
-    return { componentStatus: 'stable', icon: 'background', relatedComponents: [Image] };
+export const plugin: ExampleCollectionFunction = ({ FdImage }) => {
+    return { componentStatus: 'stable', icon: 'background', relatedComponents: [FdImage] };
 };

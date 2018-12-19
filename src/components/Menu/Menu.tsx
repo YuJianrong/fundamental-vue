@@ -1,28 +1,23 @@
-import { Component, Prop } from 'vue-property-decorator';
 import { MenuItem } from './MenuItem';
-import { componentName } from '@/util';
 import { MENU } from './types';
-import { Api } from '@/api';
 import TsxComponent from '@/vue-tsx';
+import { Doc } from '@/api';
 
 interface Props {
   canHaveAddon?: boolean;
 }
 
-@Component({
-  name: componentName('Menu'),
+@Doc.component('Menu', {
   provide() {
     return {
       [MENU]: this,
     };
   },
 })
-@Api.Component('Menu')
-@Api.Event('select', 'Sent when a menu item was selected', ['value', String])
-@Api.defaultSlot('0 or more menu lists.')
+@Doc.event('select', 'Sent when a menu item was selected', ['value', String])
+@Doc.defaultSlot('0 or more menu lists.')
 export class Menu extends TsxComponent<Props> {
-  @Api.Prop('whether menu item can have an addon', prop => prop.type(Boolean))
-  @Prop({ type: Boolean, default: false })
+  @Doc.prop('whether menu item can have an addon', { type: Boolean, default: false })
   public canHaveAddon!: boolean;
 
   public render() {

@@ -1,8 +1,4 @@
-import {
-  Component,
-  Prop,
-  Inject,
-} from 'vue-property-decorator';
+import { Inject } from 'vue-property-decorator';
 import {
   SortOrder,
   TableColumnConfig,
@@ -10,10 +6,9 @@ import {
   CellRenderer,
 } from './TableUtils';
 import { shortUuid } from '@/lib/uuid';
-import { componentName } from '@/util';
-import { Api } from '@/api';
 import { ColumnContainer, ColumnContainerIdentifier } from './ColumnContainer';
 import TsxComponent from '@/vue-tsx';
+import { Doc } from '@/api';
 
 interface Props<D> {
   label?: string | null;
@@ -23,28 +18,22 @@ interface Props<D> {
   width?: number | null;
 }
 
-@Component({ name: componentName('TableColumn') })
-@Api.Component('Table Column')
-@Api.defaultSlot('Custom Table Cell.')
+@Doc.component('TableColumn')
+@Doc.defaultSlot('Custom Table Cell.')
 export class TableColumn<D> extends TsxComponent<Props<D>> {
-  @Api.Prop('header label', prop => prop.type(String))
-  @Prop({ type: String, required: false, default: null })
+  @Doc.prop('header label', { type: String, default: null })
   public label!: string | null;
 
-  @Api.Prop('alignment', prop => prop.type(String))
-  @Prop({ type: String, required: false, default: 'default' })
+  @Doc.prop({ type: String, default: 'default' })
   public alignment!: ColumnAlignment;
 
-  @Api.Prop('field name (key must be present in the data array objects)', prop => prop.type(String))
-  @Prop({ type: String, required: false, default: null })
+  @Doc.prop('field name (key must be present in the data array objects)', { type: String, default: null })
   public prop!: (keyof D) | null;
 
-  @Api.Prop('whether the column is sortable', prop => prop.type(Boolean))
-  @Prop({ type: Boolean, required: false, default: false })
+  @Doc.prop('whether the column is sortable', { type: Boolean, default: false })
   public sortable!: boolean;
 
-  @Api.Prop('column width - must be set then isFixed is true (experimental)', prop => prop.type(Boolean))
-  @Prop({ type: Number, required: false, default: null })
+  @Doc.prop('column width - must be set then isFixed is true (experimental)', { type: Number, default: null })
   public width!: number | null;
 
   @Inject(ColumnContainerIdentifier) public table!: ColumnContainer<D> | null;

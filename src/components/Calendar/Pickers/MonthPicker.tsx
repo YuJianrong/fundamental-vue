@@ -1,10 +1,6 @@
-import { componentName } from '@/util';
-import {
-  Component,
-  Prop,
-} from 'vue-property-decorator';
 import TsxComponent from '@/vue-tsx';
 import { CalendarItem } from './../CalendarItem';
+import { Doc } from '@/api';
 
 interface Props {
   monthNames: string[];
@@ -12,14 +8,15 @@ interface Props {
   selectionContainsMonth?: (month: number) => boolean;
 }
 
-@Component({ name: componentName('MonthPicker') })
+@Doc.component('MonthPicker')
 export class MonthPicker extends TsxComponent<Props> {
-  @Prop(Array) public monthNames!: string[];
+  @Doc.prop('monthNames', Array)
+  public monthNames!: string[];
 
-  @Prop({ type: Number, default: 0 })
+  @Doc.prop('presentMonth', { type: Number, default: 0 })
   public presentMonth!: number;
 
-  @Prop({ type: Function, default: () => false })
+  @Doc.prop('selectionContainsMonth', { type: Function, default: () => false })
   public selectionContainsMonth!: (month: number) => boolean;
 
   public render() {

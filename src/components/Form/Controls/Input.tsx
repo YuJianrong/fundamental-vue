@@ -1,13 +1,10 @@
 import {
-  Component,
-  Prop,
   Watch,
   Inject,
 } from 'vue-property-decorator';
-import { componentName } from '@/util';
-import { Api } from '@/api';
 import { ItemIdentification } from './../Types/ItemIdentification';
 import TsxComponent from '@/vue-tsx';
+import { Doc } from '@/api';
 
 interface Props {
   id?: string | null;
@@ -39,44 +36,34 @@ const stateMapping = {
 type InputState = keyof (typeof stateMapping);
 const InputStates = Object.keys(stateMapping) as InputState[];
 
-@Component({ name: componentName('Input') })
-@Api.Component('Input')
-@Api.Event('input', 'Sent when the value changes', ['value', 'any'])
+@Doc.component('Input')
+@Doc.event('input', 'Sent when the value changes', ['value', 'any'])
 export class Input extends TsxComponent<Props> {
-  @Api.Prop('id', prop => prop.type(String))
-  @Prop({ default: null, type: String })
+  @Doc.prop({ default: null, type: String })
   public id!: string | null;
 
-  @Api.Prop('placeholder text', prop => prop.type(String))
-  @Prop({ default: '', type: String })
+  @Doc.prop('placeholder text', { default: '', type: String })
   public placeholder!: string;
 
-  @Api.Prop('current state', prop => prop.type(String).acceptValues(...InputStates))
-  @Prop({ default: null, type: String })
+  @Doc.prop('current state', { acceptableValues: InputStates, default: null, type: String })
   public state!: InputState | null;
 
-  @Api.Prop('whether a value is required (adds a *)', prop => prop.type(Boolean))
-  @Prop({ default: false, type: Boolean })
+  @Doc.prop('whether a value is required (adds a *)', { default: false, type: Boolean })
   public required!: boolean;
 
-  @Api.Prop('button type', prop => prop.type(String).acceptValues(...InputTypes))
-  @Prop({ default: 'text', type: String })
+  @Doc.prop('button type', { acceptableValues: InputTypes,  default: 'text', type: String })
   public type!: InputType;
 
-  @Api.Prop('whether the control is disabled', prop => prop.type(Boolean))
-  @Prop({ default: false, type: Boolean })
+  @Doc.prop('whether the control is disabled', { default: false, type: Boolean })
   public disabled!: boolean;
 
-  @Api.Prop('whether the control is readonly', prop => prop.type(Boolean))
-  @Prop({ default: false, type: Boolean })
+  @Doc.prop('whether the control is readonly', { default: false, type: Boolean })
   public readonly!: boolean;
 
-  @Api.Prop('current value', prop => prop.type(String, Number))
-  @Prop({ default: null, type: [Boolean, String, Number] })
+  @Doc.prop('current value', { default: null, type: [Boolean, String, Number] })
   public value!: boolean | string | number | null;
 
-  @Api.Prop('whether input is compact', prop => prop.type(Boolean))
-  @Prop({ type: Boolean, default: false })
+  @Doc.prop('whether input is compact', { type: Boolean, default: false })
   public compact!: boolean;
 
   @Inject({ default: null }) public itemIdentificationProvider!: ItemIdentification | null;

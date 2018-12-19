@@ -1,5 +1,4 @@
-import { componentName } from '@/util';
-import { Component, Prop } from 'vue-property-decorator';
+import { Doc } from '@/api';
 import TsxComponent from '@/vue-tsx';
 import { Button, ButtonType } from '@/components/Button';
 
@@ -10,12 +9,12 @@ interface Props {
   disabled?: boolean;
 }
 
-@Component({ name: componentName('CalendarAction') })
+@Doc.component('CalendarAction')
 export class CalendarAction extends TsxComponent<Props> {
-  @Prop(String) public title!: string | null;
-  @Prop(String) public icon!: string | null;
-  @Prop({type: Boolean, default: false}) public disabled!: boolean;
-  @Prop({type: String, default: null}) public type!: ButtonType | null;
+  @Doc.prop(String) public title!: string | null;
+  @Doc.prop(String) public icon!: string | null;
+  @Doc.prop({type: Boolean, default: false}) public disabled!: boolean;
+  @Doc.prop({type: String, default: null}) public type!: ButtonType | null;
 
   public render() {
     return (

@@ -1,12 +1,7 @@
-import {
-  Component,
-  Prop,
-  Inject,
-} from 'vue-property-decorator';
-import { componentName } from '@/util';
+import { Inject } from 'vue-property-decorator';
 import { ItemIdentification } from './../Types/ItemIdentification';
-import { Api } from '@/api';
 import TsxComponent from '@/vue-tsx';
+import { Doc } from '@/api';
 
 interface Props {
   id?: string | null;
@@ -32,28 +27,22 @@ const typeMapping = {
 type Type = keyof (typeof typeMapping);
 const Types = Object.keys(typeMapping) as Type[];
 
-@Component({ name: componentName('TextArea') })
-@Api.Component('Text Area')
-@Api.Event('input', 'Sent when the value changes', ['value', 'any'])
+@Doc.component('TextArea')
+@Doc.event('input', 'Sent when the value changes', ['value', 'any'])
 export class TextArea extends TsxComponent<Props> {
-  @Api.Prop('id of the text area element', prop => prop.type(String))
-  @Prop({ required: false, default: null, type: String })
+  @Doc.prop('id of the text area element', { default: null, type: String })
   public id!: string | null;
 
-  @Api.Prop('placeholder displayed when no value is set', prop => prop.type(String))
-  @Prop({ required: false, default: '', type: String })
+  @Doc.prop('placeholder displayed when no value is set', { default: '', type: String })
   public placeholder!: string;
 
-  @Api.Prop('state of the text area', prop => prop.type(String).acceptValues(...States))
-  @Prop({ required: false, default: 'default', type: String })
+  @Doc.prop('state of the text area', { acceptableValues: States,  default: 'default', type: String })
   public state!: State;
 
-  @Api.Prop('whether input is required', prop => prop.type(Boolean))
-  @Prop({ required: false, default: false, type: Boolean })
+  @Doc.prop('whether input is required', { default: false, type: Boolean })
   public required!: boolean;
 
-  @Api.Prop('native element type', prop => prop.type(String).acceptValues(...Types))
-  @Prop({ required: false, default: 'text', type: String })
+  @Doc.prop('native element type', { acceptableValues: Types, default: 'text', type: String })
   public type!: Type;
 
   @Inject({ default: null })

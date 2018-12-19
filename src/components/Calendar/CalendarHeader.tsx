@@ -1,5 +1,4 @@
-import { componentName } from '@/util';
-import { Component, Prop } from 'vue-property-decorator';
+import { Doc } from '@/api';
 import TsxComponent from '@/vue-tsx';
 import { CalendarAction } from './CalendarAction';
 
@@ -10,15 +9,15 @@ interface Props {
   hasNext?: () => boolean;
 }
 
-@Component({ name: componentName('CalendarHeader') })
+@Doc.component('CalendarHeader')
 export class CalendarHeader extends TsxComponent<Props> {
-  @Prop(String) public month!: string;
-  @Prop(Number) public year!: number;
+  @Doc.prop(String) public month!: string;
+  @Doc.prop(Number) public year!: number;
 
-  @Prop({ type: Function, default: () => true })
+  @Doc.prop({ type: Function, default: () => true })
   public hasPrevious!: () => boolean;
 
-  @Prop({ type: Function, default: () => true })
+  @Doc.prop({ type: Function, default: () => true })
   public hasNext!: () => boolean;
 
   public render() {

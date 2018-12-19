@@ -1,8 +1,6 @@
-import { Component, Prop } from 'vue-property-decorator';
-import { componentName } from '@/util';
-import { Api } from '@/api';
 import TsxComponent from '@/vue-tsx';
 import { Color, Colors, backgroundColorClassName } from '@/lib';
+import { Doc } from '@/api';
 
 interface Props {
     media?: any | null;
@@ -15,37 +13,29 @@ interface Props {
     backgroundColor?: Color | null;
 }
 
-@Component({ name: componentName('Tile') })
-@Api.Component('Tile')
-@Api.slot('media', 'Tile Media')
-@Api.slot('actions', 'Tile Actions')
+@Doc.component('Tile')
+@Doc.slot('media', 'Tile Media')
+@Doc.slot('actions', 'Tile Actions')
 export class Tile extends TsxComponent<Props> {
-    @Api.Prop('title', prop => prop.type(String))
-    @Prop({ type: String, default: null, required: false })
+    @Doc.prop({ type: String, default: null })
     public title!: string | null;
 
-    @Api.Prop('description', prop => prop.type(String))
-    @Prop({ type: String, default: null, required: false })
+    @Doc.prop({ type: String, default: null })
     public description!: string | null;
 
-    @Api.Prop('row span', prop => prop.type(Number))
-    @Prop({ type: Number, default: null, required: false })
+    @Doc.prop('row span', { type: Number, default: null })
     public rowSpan!: number | null;
 
-    @Api.Prop('column span', prop => prop.type(Number))
-    @Prop({ type: Number, default: null, required: false })
+    @Doc.prop('column span', { type: Number, default: null })
     public colSpan!: number | null;
 
-    @Api.Prop('background color', prop => prop.type(String).acceptValues(...Colors))
-    @Prop({ required: false, default: null, type: String })
+    @Doc.prop('background color', { acceptableValues: Colors, default: null, type: String })
     public backgroundColor!: Color | null;
 
-    @Api.Prop('render tile as a button', prop => prop.type(Boolean))
-    @Prop({ type: Boolean, default: false, required: false })
+    @Doc.prop('render tile as a button', { type: Boolean, default: false })
     public isButton!: boolean;
 
-    @Api.Prop('disable tile', prop => prop.type(Boolean))
-    @Prop({ type: Boolean, default: false, required: false })
+    @Doc.prop('disable tile', { type: Boolean, default: false })
     public disabled!: boolean;
 
     public render() {

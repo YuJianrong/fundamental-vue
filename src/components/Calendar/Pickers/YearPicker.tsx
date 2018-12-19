@@ -1,5 +1,4 @@
-import { componentName } from '@/util';
-import { Component, Prop } from 'vue-property-decorator';
+import { Doc } from '@/api';
 import TsxComponent from '@/vue-tsx';
 import { CalendarItem, CalendarItemState } from './../CalendarItem';
 
@@ -11,21 +10,21 @@ interface Props {
   selectionContainsYear: (year: number) => boolean;
 }
 
-@Component({ name: componentName('YearPicker') })
+@Doc.component('YearPicker')
 export class YearPicker extends TsxComponent<Props> {
-  @Prop(Date)
+  @Doc.prop(Date)
   public maxDate!: Date;
 
-  @Prop(Date)
+  @Doc.prop(Date)
   public minDate!: Date;
 
-  @Prop({ type: Array, default: () => [] })
+  @Doc.prop({ type: Array, default: () => [] })
   public years!: number[];
 
-  @Prop({ type: Number, default: 0 })
+  @Doc.prop({ type: Number, default: 0 })
   public presentYear!: number;
 
-  @Prop({ type: Function, default: () => false })
+  @Doc.prop({ type: Function, default: () => false })
   public selectionContainsYear!: (year: number) => boolean;
 
   private isValidYear(year: number): boolean {

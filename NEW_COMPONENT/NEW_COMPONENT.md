@@ -1,6 +1,6 @@
 # New Component Guide
 
-> This is a very brief guide which describes what you have to do in order to implement a new component for Fundamental-vue.
+> This is a very brief guide which describes what you have to do in order to implement a new component for Fundamental Vue.
 
 ## Creating the files for the actual Component
 For the purpose of this guide, lets assume that you want to create a component called `Flower`.
@@ -29,30 +29,32 @@ Lets further assume that you are implementing a simple component.
 **src/components/Flower.tsx**
 
 ```js
-import { componentName } from '@/util';
+import { Fundamental } from '@/core';
 
 import {
-  Component,
   Prop,
   Vue,
 } from 'vue-property-decorator';
 
-@Component({ name: componentName('Flower') })
+@Fundamental.component('Flower')
 export class Flower extends Vue {
   @Prop public color!: string;
 
+  private styles() {
+    return {
+      'background-color': this.color,
+    };
+  }
+
   public render() {
-    const style = {
-      'background-color': color,
-    }
-    return <div style={style}>I am a Flower</div>
+    return <div style={this.style}>I am a Flower</div>
   }
 }
 ```
 
 Key points:
 
-- `componentName('Flower')` is used to create the name for your component. By convention the string passed to `componentName` should be in CamelCase, starting with an uppercase letter and without any prefix. `componentName` will add the prefix for you.
+- `@Fundamental.component('Flower')` is a decorator which is used throughout Fundamental Vue. This decorator is a very thin wrapper around [Vue Class Component](https://github.com/vuejs/vue-class-component). The first parameter is simply the name of your component. By convention the name should be in CamelCase, starting with an uppercase letter and without any prefix. You can pass an `Object` as a second argument which acts as the component's options. If you want to learn more about the shape of the options object please refer to the [Vue Class Component](https://github.com/vuejs/vue-class-component) documentation.
 - In order to improve interoperability default exports for components are avoided.
 - `@Prop` iVars are suffixed with `!` in order to silence the compiler (false positive).
 
@@ -134,6 +136,15 @@ import { ExampleCollectionFunction } from '../types';
 
 export const plugin: ExampleCollectionFunction = () => {
   return { relatedComponents: [] };
+  return {
+    // 'stable', 'experimental', 'deprecated', 'inprogress'
+    componentStatus: 'experimental',
+
+    // any icon name supported by Fundamental Vue
+    icon: 'calendar',
+
+    relatedComponents: [],
+  };
 };
 ```
 
@@ -142,8 +153,16 @@ By having the code above in the `index.ts`-file you basically say that your exam
 ```js
 import { ExampleCollectionFunction } from '../types';
 
-export const plugin: ExampleCollectionFunction = ({ Flower }) => {
-  return { relatedComponents: [Flower] };
+export const plugin: ExampleCollectionFunction = () => {
+  return {
+    // 'stable', 'experimental', 'deprecated', 'inprogress'
+    componentStatus: 'experimental',
+
+    // any icon name supported by Fundamental Vue
+    icon: 'calendar',
+
+    relatedComponents: [Flower],
+  };
 };
 ```
 
@@ -154,35 +173,30 @@ Your new component may have props or emit custom events. You can document props 
 **src/components/Flower.tsx**
 
 ```js
-import { componentName } from '@/util';
-import { Api } from '@/api'; // <-- import Api-Doc Helper
+import { Fundamental } from '@/core';
+import { Doc } from '@/api'; // <-- import Api-Doc Helper
 import {
-  Component,
   Prop,
   Vue,
 } from 'vue-property-decorator';
 
-@Component({ name: componentName('Flower') })
-
-// Document the Component itself
-
-@Api.Component(/* human readable name */'Alert', component => {
-  component.addEvent('click', 'Sent when the Flower is clicked');
-})
+@Fundamental.component('Flower')
+@Doc.component('Flower')
+@Doc.event('click', 'Sent when the Flower is clicked');
 export class Flower extends Vue {
   @Prop
-  @ApiProp('flower color', prop => {
-    prop
-      .types(String)
-      .acceptValues('red', 'green', 'blue')
-  })
+  @Doc.prop('flower color')
+  @Doc.prop.acceptValues(['red', 'green', 'blue'])
   public color!: string;
 
+  private styles() {
+    return {
+      'background-color': this.color,
+    };
+  }
+
   public render() {
-    const style = {
-      'background-color': color,
-    }
-    return <div style={style}>I am a Flower</div>
+    return <div style={this.style}>I am a Flower</div>
   }
 }
 ```
@@ -207,12 +221,9 @@ We now come back to our example from earlier and enable the static attribute che
 **src/components/Flower.tsx**
 
 ```js
-import { componentName } from '@/util';
-import { Api } from '@/api';
-import {
-  Component,
-  Prop,
-} from 'vue-property-decorator';
+import { Fundamental } from '@/core';
+import { Prop } from 'vue-property-decorator';
+import { Doc } from '@/api';
 import TsxComponent from '@/vue-tsx';  // <-- import TsxComponent
 
 // Declare our puplic props (again)
@@ -220,48 +231,46 @@ interface Props {
   color?: string;
 }
 
-@Component({ name: componentName('Flower') })
-
-// Document the Component itself
-
-@Api.Component(/* human readable name */'Alert', component => {
-  component.addEvent('click', 'Sent when the Flower is clicked');
-})
+@Fundamental.component('Flower')
+@Doc.component('Flower')
+@Doc.event('click', 'Sent when the Flower is clicked');
 export class Flower extends TsxComponent<Props> { // <-- extend the TsxComponent
   @Prop
-  @Api.Prop('flower color', prop => {
+  @Doc.prop('flower color', prop => {
     prop
       .types(String)
       .acceptValues('red', 'green', 'blue')
   })
   public color!: string;
 
+  private styles() {
+    return {
+      'background-color': this.color,
+    };
+  }
+
   public render() {
-    const style = {
-      'background-color': color,
-    }
-    return <div style={style}>I am a Flower</div>
+    return <div style={this.style}>I am a Flower</div>
   }
 }
 ```
 
 Declaring our public interface id done twice (by using @Prop and by declaring the Prop-interface). There are third party projects that work around this problem but this low-tech and redundant solution seemed acceptable.
 
-## @Api-Decorators
+## @Doc-Decorators
 
-### @Api.component(humanReadableName, builder?)
+### @Doc.component(componentName)
 
-Annotate your component with this decorator to give it a human readable name. The optional builder allows you to document events emitted by this component.
+Annotate your component with this decorator to give it a name.
 
 * **Arguments:**
-  * `humanReadableName: string` human readable component name
-  * `builder?: (builder: Api) → void` (optional) builder to further document the component. **deprecated - no replacement available, yet**
+  * `componentName: string` component name
 
 > **Important**
 >
-> You have to use `@Api.component` **after** using the `@Component`-decorator. Otherwise it won't work properly.
+> You have to use `@Doc.component` **after** using the `@Fundamental.component`-decorator. Otherwise it won't work properly.
 
-### @Api.slot(name, description?)
+### @Doc.slot(name, description?)
 
 Annotate your component with this decorator to specify available slots.
 
@@ -269,39 +278,43 @@ Annotate your component with this decorator to specify available slots.
   * `name: string` name of the slot (must not be human readable)
   * `description?: string` brief description of the slot
 
-### @Api.defaultSlot(description)
+### @Doc.defaultSlot(description)
 
 Annotate your component with this decorator to describe the default slot (if available).
 
 * **Arguments:**
   * `description: string` brief description of the slot
 
-### @Api.prop(description, builder?)
+### @Doc.prop(description, options)
 
 You can use this decorator in order to document your props.
 
 * **Arguments:**
-  * `description: string` brief description of the slot
-  * `builder: (builder: ApiProp) → void` optional builder to further customize the prop documentation.
+  * `description: string` brief description of the prop
+  * `options: { defaultValue: any }` optional default value. You rarely have to specify the default value because the documentation system automatically detects default values specified using `@Prop`.
 
-### ApiProp
+### @Doc.prop.acceptValues(values)
 
-* **Methods:**
-  * `acceptValues(...values: (number | string)[]): ApiProp` defines valid prop values
-  * `type(...types: PropType[]): ApiProp` defines prop types
+You can use this decorator in order to document accepted values.
 
-> **Good to know**
->
-> Both methods return `this` so you can easily chain them. For example:
-> ```js
-> @Api.Prop('first name', prop => {
->   prop
->     .type(String, Number)
->     .acceptValues('chris', 123)
-> )
-> @Prop({ type: [String, Number], default: null })
-> public firstName!: string | null;
-> ```
+* **Arguments:**
+  * `values: (number | string)[]` defines valid prop values
+
+### @Doc.event(eventName, eventDescription, ?parameter)
+
+You can use this decorator in order to document events emitted by your component.
+
+* **Arguments:**
+  * `eventName: string` name of the event emitted by the component
+  * `eventDescription: string` description of the event emitted by the component
+  * `parameter: AnyConstructor | string` optional parameter description.
+
+### @Doc.mixins(mixins)
+
+You can use this decorator in order to document mixins used by your component.
+
+* **Arguments:**
+  * `mixins: VueComponent[]` mixins
 
 ## Known Issues
 * Parameters of events can be annotated but are not displayed - yet.

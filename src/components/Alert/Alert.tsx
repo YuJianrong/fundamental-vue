@@ -1,12 +1,6 @@
-import {
-  Component,
-  Prop,
-  Model,
-  Watch,
-} from 'vue-property-decorator';
-import { Api } from '@/api';
-import { componentName } from '@/util';
-import { Uid } from '@/mixins';
+import { Watch } from 'vue-property-decorator';
+import { Doc } from '@/api';
+import { UidMixin } from '@/mixins';
 import { mixins } from 'vue-class-component';
 
 // Alert Types
@@ -26,18 +20,18 @@ interface Props {
   uid?: string; // Uid mixin
 }
 
-@Component({ name: componentName('Alert') })
-@Api.Component('Alert')
-@Api.Event('dismiss', 'Sent when the dismiss button is clicked')
-@Api.defaultSlot('alert content')
-export class Alert extends mixins(Uid) {
-  @Api.Prop('whether alert is dismissible', prop => prop.type(Boolean))
-  @Prop({ type: Boolean, default: true })
+@Doc.component('Alert')
+@Doc.event('dismiss', 'Sent when the dismiss button is clicked')
+@Doc.defaultSlot('alert content')
+export class Alert extends mixins(UidMixin) {
+  @Doc.prop('whether alert is dismissible', { type: Boolean, default: true })
   public dismissible!: boolean;
 
-  @Model('visible', { default: true, type: Boolean })
-  @Api.Prop('whether alert is visible', prop => prop.type(Boolean))
+  @Doc.model('whether alert is visible', { event: 'visible', default: true, type: Boolean })
   public visible!: boolean;
+
+  @Doc.prop('alert type', { acceptableValues: AlertTypes, default: 'default' })
+  public type!: AlertType;
 
   @Watch('visible', { immediate: true})
   public didChangeVisible(visible: boolean) {
@@ -46,11 +40,6 @@ export class Alert extends mixins(Uid) {
   }
 
   private currentVisible = this.visible;
-
-  @Api.Prop('alert type', prop => prop.type(String).acceptValues(...AlertTypes))
-  @Prop({ type: String, default: 'default' })
-  public type!: AlertType;
-
   public $tsxProps!: Readonly<Props>;
 
   public render() {

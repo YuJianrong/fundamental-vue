@@ -40,7 +40,7 @@ import * as Tabs from './Tabs';
 import { Identifier } from './Identifier';
 import { Modal } from './Modal';
 import { Token } from './Token';
-import { Image } from './Image';
+import { FdImage } from './Image';
 import { Spinner } from './Spinner';
 import { Link } from './Link';
 import { Badge } from './Badge';
@@ -72,7 +72,7 @@ export const all = {
     Spinner,
     Modal,
     Identifier,
-    Image,
+    FdImage,
     Link,
     Badge,
     Label,

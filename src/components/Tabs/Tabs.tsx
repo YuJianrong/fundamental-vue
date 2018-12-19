@@ -1,30 +1,22 @@
-import {
-  Component,
-  Prop,
-  Watch,
-} from 'vue-property-decorator';
-import { Api } from '@/api';
-import { componentName } from '@/util';
+import { Watch } from 'vue-property-decorator';
 import { TabItemContainer } from './TabItemContainer';
 import { TabItem } from './TabItem';
 import TsxComponent from '@/vue-tsx';
+import { Doc } from '@/api';
 
 interface Props {
   value?: string | null;
 }
 
-@Component({
+@Doc.component('Tabs', {
   provide() {
     return { tabItemContainer: this };
   },
-  name: componentName('Tabs'),
 })
-@Api.Component('Tabs')
-@Api.Event('input', 'triggers when the active tab item name changes', ['tabItemName', String])
-@Api.defaultSlot('Tab Items')
+@Doc.event('input', 'triggers when the active tab item name changes', ['tabItemName', String])
+@Doc.defaultSlot('Tab Items')
 export class Tabs extends TsxComponent<Props> implements TabItemContainer {
-  @Api.Prop('active tab item name', prop => prop.type(String))
-  @Prop({ type: String, default: null, required: false })
+  @Doc.prop('active tab item name', { type: String, default: null })
   public value!: string | null;
 
   @Watch('value', { immediate: true })

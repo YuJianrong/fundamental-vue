@@ -1,28 +1,21 @@
-import {
-  Component,
-  Prop,
-  Inject,
-} from 'vue-property-decorator';
-import { componentName } from '@/util';
+import { Inject } from 'vue-property-decorator';
 import { SideNavItem } from './SideNavItem';
 import { SideNav } from './SideNav';
-import { Api } from '@/api';
 import TsxComponent from '@/vue-tsx';
 import { SIDE_NAV } from './shared';
+import { Doc } from '@/api';
 
 interface Props {
   value?: string | null;
   header?: string | null;
 }
 
-@Component({ name: componentName('SideNavList') })
-@Api.Component('Side Nav List')
-@Api.Event('select', 'Sent when a item was clicked', ['item', 'Item'])
-@Api.Event('input', 'Sent when a item was clicked', ['itemId', String])
-@Api.defaultSlot('Side Navigation Items or Side Navigation Submenus.')
+@Doc.component('SideNavList')
+@Doc.event('select', 'Sent when a item was clicked', ['item', 'Item'])
+@Doc.event('input', 'Sent when a item was clicked', ['itemId', String])
+@Doc.defaultSlot('Side Navigation Items or Side Navigation Submenus.')
 export class SideNavList extends TsxComponent<Props> {
-  @Api.Prop('value of the selected item', prop => prop.type(String))
-  @Prop({ type: String, default: null, required: false })
+  @Doc.prop('value of the selected item', { type: String, default: null })
   public value!: string | null;
 
   public get activeItemId(): string | null {
@@ -34,12 +27,7 @@ export class SideNavList extends TsxComponent<Props> {
   }
   private localActiveItemId: string | null = this.value;
 
-  @Api.Prop('header', build => {
-    build
-      .describe('text displayed in the side nav list (group) header')
-      .type(Boolean);
-  })
-  @Prop({ type: String, required: false, default: null })
+  @Doc.prop('text displayed in the side nav list (group) header', { type: String, default: null })
   public header!: string | null;
 
   @Inject({ from: SIDE_NAV, default: null })

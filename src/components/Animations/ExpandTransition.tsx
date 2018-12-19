@@ -1,6 +1,6 @@
 import './ExpandTransition.sass';
-import { Vue, Component } from 'vue-property-decorator';
-import { componentName } from '@/util';
+import { Vue } from 'vue-property-decorator';
+import { Doc } from '@/api';
 
 // Use data('Key') when you want to create a dataset-key. By doing so you ensure to only get properly
 // namespaces keys.
@@ -17,7 +17,7 @@ const removeClass = ({classList}: Element, className: string) => {
 };
 
 // Grabbed from Element
-@Component({ name: componentName('ExpandTransition') })
+@Doc.component('ExpandTransition')
 export class ExpandTransition extends Vue {
   public beforeEnter(el: HTMLElement) {
     addClass(el, 'collapse-transition');

@@ -1,8 +1,5 @@
-import {
-  Vue,
-  Component,
-  Prop,
-} from 'vue-property-decorator';
+import { Vue } from 'vue-property-decorator';
+import { Doc } from '@/api';
 
 const makeId = () => {
   let text = '';
@@ -13,11 +10,12 @@ const makeId = () => {
   return text;
 };
 
-@Component({ name: 'Uid' })
-export class Uid extends Vue  {
-  @Prop({
+@Doc.component('UidMixin')
+export class UidMixin extends Vue  {
+  @Doc.prop({
     type: String,
     required: false,
     default: () => makeId(),
-  }) public uid!: string;
+  })
+  public uid!: string;
 }

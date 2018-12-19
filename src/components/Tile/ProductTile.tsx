@@ -1,7 +1,5 @@
-import { Component, Prop } from 'vue-property-decorator';
-import { componentName } from '@/util';
-import { Api } from '@/api';
 import TsxComponent from '@/vue-tsx';
+import { Doc } from '@/api';
 
 interface Props {
     url?: string | null;
@@ -9,24 +7,19 @@ interface Props {
     isButton?: boolean;
 }
 
-@Component({ name: componentName('ProductTile') })
-@Api.Component('Product Tile')
-@Api.slot('content', 'Product Content')
+@Doc.component('ProductTile')
+@Doc.slot('content', 'Product Content')
 export class ProductTile extends TsxComponent<Props> {
-    @Api.Prop('image url', prop => prop.type(String))
-    @Prop({ type: String, default: null, required: true })
+    @Doc.prop('image url', { type: String, default: null, required: true })
     public url!: string | null;
 
-    @Api.Prop('title', prop => prop.type(String))
-    @Prop({ type: String, default: null, required: false })
+    @Doc.prop({ type: String, default: null })
     public title!: string | null;
 
-    @Api.Prop('render product tile as a button', prop => prop.type(Boolean))
-    @Prop({ type: Boolean, default: false, required: false })
+    @Doc.prop('render product tile as a button', { type: Boolean, default: false })
     public isButton!: boolean;
 
-    @Api.Prop('disable product tile', prop => prop.type(Boolean))
-    @Prop({ type: Boolean, default: false, required: false })
+    @Doc.prop('disable product tile', { type: Boolean, default: false })
     public disabled!: boolean;
 
     private get style() {

@@ -1,7 +1,5 @@
-import { Component, Prop } from 'vue-property-decorator';
-import { componentName } from '@/util';
-import { Api } from '@/api';
 import TsxComponent from '@/vue-tsx';
+import { Doc } from '@/api';
 
 const typeMapping = {
     warning: 'Warning',
@@ -28,20 +26,16 @@ interface Props {
     type?: StatusType | null;
 }
 
-@Component({ name: componentName('Status') })
-@Api.Component('Status')
-@Api.defaultSlot('Text displayed inside the status.')
+@Doc.component('Status')
+@Doc.defaultSlot('Text displayed inside the status.')
 export class Status extends TsxComponent<Props> {
-    @Api.Prop('build-in status icon type', prop => prop.type(String).acceptValues(...StatusIconTypes))
-    @Prop({ type: String, required: false, default: null })
+    @Doc.prop('built-in status icon type', { acceptableValues: StatusIconTypes, type: String, default: null })
     public statusIcon!: StatusIconType;
 
-    @Api.Prop('status type', prop => prop.type(String).acceptValues(...StatusTypes))
-    @Prop({ type: String, required: false, default: null })
+    @Doc.prop('status type', { acceptableValues: StatusTypes, type: String, default: null })
     public type!: StatusType | null;
 
-    @Api.Prop('icon displayed in the status indicator', prop => prop.type(String))
-    @Prop({ type: String, default: null, required: false })
+    @Doc.prop('icon displayed in the status indicator', { type: String, default: null })
     public icon!: string | null;
 
     public render() {
